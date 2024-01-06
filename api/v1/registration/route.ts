@@ -1,5 +1,6 @@
 import express, { response } from "express";
 import RegistrationService from "./service";
+import path from "path";
 
 const RegistrationRouter = express.Router();
 
@@ -16,7 +17,12 @@ RegistrationRouter.post(
     try {
       const result = await RegistrationService.registerUser(request.body);
       console.log(result);
-      return response.redirect(result);
+      return response.json({
+        status: true,
+        data: {
+          url: result,
+        },
+      });
     } catch (e) {
       return response.json({ status: false, message: "Please Retry" });
     }
