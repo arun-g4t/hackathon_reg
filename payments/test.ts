@@ -1,19 +1,25 @@
 import axios from "axios";
 import { createHash } from "crypto";
 import { variables } from "../config/envLoader";
-import { generateUniqueId } from "../utils/generateUniqueId";
 
-export const initPayment = async (transactionId: string) => {
+export const initPayment = async (
+  transactionId: string,
+  teamSize: number,
+  phone?: string
+) => {
   try {
+    const amountToPay = 100 * 500 * teamSize;
+
+    console.log("Amount to pay: ", amountToPay);
+
     const paymentPayload = {
       merchantId: variables.MERCHANT_ID,
       merchantTransactionId: transactionId,
       merchantUserId: variables.MERCHANT_USER_ID,
-      amount: 10000,
-      redirectUrl: `${variables.BASE_URL}/api/v1/success`,
+      amount: amountToPay,
+      redirectUrl: `${variables.BASE_URL}/api/v1/register/redirect`,
       redirectMode: "POST",
-      callbackUrl: `${variables.BASE_URL}/api/v1/success`,
-      mobileNumber: "9999999999",
+      callbackUrl: `${variables.BASE_URL}/api/v1/register/redirect`,
       paymentInstrument: {
         type: "PAY_PAGE",
       },
@@ -37,7 +43,7 @@ export const initPayment = async (transactionId: string) => {
 
     const options = {
       method: "post",
-      url: "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay",
+      url: variables.TEST_PAY_URL,
       headers: {
         "Content-Type": "application/json",
         "X-Verify": checksum,

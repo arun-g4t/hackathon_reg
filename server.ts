@@ -1,6 +1,7 @@
 import express from "express";
 import Database from "./config/dbConn";
 import RegistrationRouter from "./api/v1/registration/route";
+import helmet from "helmet";
 class Server {
   public app = express();
   public port?: Number;
@@ -10,6 +11,7 @@ class Server {
     this.router();
   }
   private async config() {
+    this.app.use(helmet());
     this.app.set("trust proxy", true);
     this.app.set("case sensitive routing", true);
     this.app.use(express.json());
@@ -17,7 +19,7 @@ class Server {
   }
 
   private async router() {
-    this.app.use("/api/v1", RegistrationRouter);
+    this.app.use("/api/v1/register", RegistrationRouter);
   }
 
   private async connectToDb() {

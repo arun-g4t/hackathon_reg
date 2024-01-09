@@ -6,13 +6,40 @@ const RegistrationRouter = express.Router();
 
 RegistrationRouter.get(
   "/",
-  (request: express.Request, response: express.Response) => {
-    return response.send({ status: true });
+  async (request: express.Request, response: express.Response) => {
+    try {
+      const { payment, team } = request.query;
+
+      let payStatus: boolean | undefined;
+      if (typeof payment !== "undefined") {
+        if (payment === "true") {
+          payStatus = true;
+        } else if (payment === "false") {
+          payStatus = false;
+        }
+      }
+
+      const result = await RegistrationService.getTeams({
+        payment: payStatus,
+        teamName: team as string,
+      });
+
+      return response.json({
+        status: true,
+        data: result,
+      });
+    } catch (e) {
+      if (e instanceof Error) {
+        return response.json({ status: false, message: e.message });
+      } else {
+        return response.json({ status: false, message: "Please Retry" });
+      }
+    }
   }
 );
 
 RegistrationRouter.post(
-  "/register",
+  "/",
   async (request: express.Request, response: express.Response) => {
     try {
       const result = await RegistrationService.registerUser(request.body);
@@ -20,7 +47,7 @@ RegistrationRouter.post(
       return response.json({
         status: true,
         data: {
-          url: result,
+          result,
         },
       });
     } catch (e) {
@@ -30,7 +57,7 @@ RegistrationRouter.post(
 );
 
 RegistrationRouter.post(
-  "/success",
+  "/redirect",
   async (request: express.Request, response: express.Response) => {
     try {
       const result = await RegistrationService.updatePaymentStatus(
@@ -46,6 +73,24 @@ RegistrationRouter.post(
       return response.json({ status: false, message: "Payment Failed" });
     } catch (e) {
       return response.json({ status: false, message: "Payment Failed" });
+    }
+  }
+);
+
+RegistrationRouter.post(
+  "/payment",
+  async (request: express.Request, response: express.Response) => {
+    try {
+      const result = await RegistrationService.makePayment(request.body);
+      console.log(result);
+      return response.json({
+        status: true,
+        data: {
+          result,
+        },
+      });
+    } catch (e) {
+      return response.json({ status: false, message: "Please Retry" });
     }
   }
 );
