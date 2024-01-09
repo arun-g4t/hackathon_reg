@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration - Solutio IoT Hackathon</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="registration.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="G4T logo-01.svg">
+</head>
+
+<body>
+    <header>
+        <div class="banner">
+            <a href="index.html">
+                <img src="grow4techlogo.jpg" alt="Educare Grow4tech Logo" class="logo">
+            </a>
+            <div id="bannerAnimation"></div>
+            <span>Solutio IoT Hackathon</span>
+        </div>
+    </header>
+
+    <main>
+        <form id="registrationForm">
+            <h2>Register for Solutio IoT Hackathon</h2>
+
+            <div>
+                <label for="regType">Registration Type:</label>
+                <select id="regType" name="registrationType">
+                    <option value="individual">Individual</option>
+                    <option value="team">Team</option>
+                </select>
+            </div>
+
+            <div id="individualFields">
+                <!-- Individual registration fields -->
+                <div><label for="name">Name:</label><input type="text" id="name" name="name" required></div>
+                <div><label for="college">College/University:</label><input type="text" id="college" name="college" required></div>
+                <div><label for="usn">USN:</label><input type="text" id="usn" name="usn" required></div>
+                <div><label for="semester">Semester:</label><input type="number" id="semester" name="semester" required>
+                </div>
+                <div><label for="branch">Branch:</label><input type="text" id="branch" name="branch" required></div>
+                <div><label for="dob">Date of Birth:</label><input type="date" id="dob" name="dob" required></div>
+                <div><label for="phone">Phone Number:</label><input type="tel" id="phone" name="phone" required></div>
+                <div><label for="email">Email Address:</label><input type="email" id="email" name="email" required>
+                </div>
+            </div>
+
+            <div id="teamFields" style="display:none;">
+                <!-- Team registration fields -->
+                <div><label for="teamName">Team Name:</label><input type="text" id="teamName" name="teamName"></div>
+                <div><label for="numMembers">Number of Members:</label><input type="number" id="numMembers" name="numMembers" min="1" max="5" value="1"></div>
+                <div id="teamMembersContainer"></div>
+            </div>
+
+            <div>
+                <label for="payment">Total Fee:</label>
+                <input type="text" id="payment" name="payment" readonly>
+            </div>
+
+            <button type="submit" id="payNow">Pay Now</button>
+        </form>
+    </main>
+
+    <footer>
+        <div class="social-media">
+            <!-- Replace with actual social media links and icons -->
+            <a href="https://twitter.com/grow4tech" target="_blank" aria-label="Twitter">
+                <i class="fab fa-twitter"></i> <!-- Example icon class from Font Awesome -->
+            </a>
+            <a href="https://facebook.com/grow4tech" target="_blank" aria-label="Facebook">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://linkedin.com/company/grow4tech" target="_blank" aria-label="LinkedIn">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+            <!-- Add more social links as needed -->
+        </div>
+        <p>
+            &copy; 2024 <a href="https://grow4tech.com" target="_blank">Educare Grow4tech</a>. All rights reserved.
+        </p>
+    </footer>
+
+    <script src="registrationScript.js"></script>
+</body>
+
+</html>

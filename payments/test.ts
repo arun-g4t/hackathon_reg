@@ -17,8 +17,8 @@ export const initPayment = async (
       merchantTransactionId: transactionId,
       merchantUserId: variables.MERCHANT_USER_ID,
       amount: amountToPay,
-      redirectUrl: `${variables.BASE_URL}/api/v1/register/redirect`,
-      redirectMode: "POST",
+      redirectUrl: `${variables.BASE_URL}`,
+      redirectMode: "REDIRECT",
       callbackUrl: `${variables.BASE_URL}/api/v1/register/redirect`,
       paymentInstrument: {
         type: "PAY_PAGE",
@@ -43,7 +43,7 @@ export const initPayment = async (
 
     const options = {
       method: "post",
-      url: variables.TEST_PAY_URL,
+      url: variables.PAY_URL,
       headers: {
         "Content-Type": "application/json",
         "X-Verify": checksum,
