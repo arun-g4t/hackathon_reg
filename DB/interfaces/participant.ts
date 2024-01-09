@@ -3,6 +3,9 @@ export interface IParticipant {
   email: string;
   phone: string;
   organization: string;
+  usn: string;
+  semester: number;
+  dob: Date;
 }
 export interface ITeam {
   teamName: string;

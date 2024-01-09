@@ -2,6 +2,7 @@ import express from "express";
 import Database from "./config/dbConn";
 import RegistrationRouter from "./api/v1/registration/route";
 import helmet from "helmet";
+import ClientRouter from "./api/v1/clientRouter/route";
 class Server {
   public app = express();
   public port?: Number;
@@ -16,9 +17,11 @@ class Server {
     this.app.set("case sensitive routing", true);
     this.app.use(express.json());
     this.app.use(express.urlencoded());
+    this.app.use(express.static("client"));
   }
 
   private async router() {
+    this.app.use("/", ClientRouter);
     this.app.use("/api/v1/register", RegistrationRouter);
   }
 

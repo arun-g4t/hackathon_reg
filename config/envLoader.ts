@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 const ENV = [
+  "DB_URL",
   "DB_HOST",
   "DB_PORT",
   "DB_NAME",
@@ -13,6 +14,7 @@ const ENV = [
   "MERCHANT_USER_ID",
   "TEST_PAY_URL",
   "LIVE_PAY_URL",
+  "PAY_URL",
 
   "BASE_URL",
 ] as const;

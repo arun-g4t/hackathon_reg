@@ -1,11 +1,11 @@
-import express, { response } from "express";
+import express from "express";
 import RegistrationService from "./service";
-import path from "path";
 
 const RegistrationRouter = express.Router();
 
 RegistrationRouter.get(
   "/",
+
   async (request: express.Request, response: express.Response) => {
     try {
       const { payment, team } = request.query;

@@ -18,6 +18,18 @@ const participantSchema = new mongoose.Schema<IParticipant>({
     type: String,
     required: true,
   },
+  usn: {
+    type: String,
+    required: true,
+  },
+  semester: {
+    type: Number,
+    required: true,
+  },
+  dob: {
+    type: Date,
+    required: true,
+  },
 });
 
 const teamSchema = new mongoose.Schema<ITeam & Document>({
