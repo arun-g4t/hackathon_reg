@@ -1,7 +1,15 @@
 export interface IParticipant {
-  name: string;
+  memberName: string;
   email: string;
-  college: string;
+  phone: string;
+  organization: string;
+}
+export interface ITeam {
+  teamName: string;
+  teamSize: number;
+  teamMembers: IParticipant[];
   payment?: boolean;
   transactionId?: string;
+  createdAt: Date;
+  paymentAt: Date | null;
 }

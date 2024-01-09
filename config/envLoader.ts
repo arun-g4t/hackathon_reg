@@ -11,6 +11,8 @@ const ENV = [
   "MERCHANT_ID",
   "PAYMENT_SALT_KEY",
   "MERCHANT_USER_ID",
+  "TEST_PAY_URL",
+  "LIVE_PAY_URL",
 
   "BASE_URL",
 ] as const;

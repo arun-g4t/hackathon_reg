@@ -1,28 +1,45 @@
-import { createHash, verify } from "crypto";
-import { IParticipant } from "../../../DB/interfaces/participant";
-import axios from "axios";
 import RegistrationDatabase from "./database";
-import { response } from "express";
 import { initPayment } from "../../../payments/test";
-import { generateUniqueId } from "../../../utils/generateUniqueId";
-import { ObjectId } from "mongoose";
+import mongoose, { isValidObjectId } from "mongoose";
+import { ITeamCreate } from "./interface";
+import { ITeam } from "../../../DB/interfaces/participant";
 
 class RegistrationService {
-  static async registerUser(data: IParticipant) {
+  static async registerUser(data: ITeamCreate) {
     try {
-      const { name, college, payment = false } = data;
+      const { teamName, teamMembers } = data;
 
-      const result = await RegistrationDatabase.registerUser({ name, college });
+      const teamExists = await RegistrationService.teamExists(
+        teamName as string
+      );
+      console.log(teamExists);
+      if (teamExists) {
+        throw new Error("Team Name already exists");
+      }
+      const teamSize = teamMembers.length;
 
-      const paymentDetails = await initPayment(result.transactionId);
+      const result = await RegistrationDatabase.registerTeam({
+        teamName,
+        teamMembers,
+      });
+
+      const paymentDetails = await initPayment(result.transactionId, teamSize);
+
+      console.log(paymentDetails);
+
       if (paymentDetails.success) {
-        return paymentDetails.data.instrumentResponse.redirectInfo.url;
+        return {
+          team: teamName,
+          url: paymentDetails.data.instrumentResponse.redirectInfo.url,
+        };
       } else {
         throw Error("Retry");
       }
     } catch (e) {
-      if (e) {
-        console.error(e);
+      console.error(e);
+      if (e instanceof Error) {
+        return e.message;
+      } else {
         return "Some error occured";
       }
     }
@@ -37,14 +54,95 @@ class RegistrationService {
 
       if (code !== "PAYMENT_SUCCESS") return false;
 
-      const result = await RegistrationDatabase.updateUser(transactionId, {
+      const result = await RegistrationDatabase.updateTeamPayment(
         transactionId,
-      });
+        {
+          transactionId,
+        }
+      );
 
       return result;
     } catch (e) {
       console.error(e);
       return "Some error occured";
+    }
+  }
+
+  static async teamExists(id: string) {
+    try {
+      let query = {};
+      if (isValidObjectId(id)) {
+        query = {
+          _id: new mongoose.Types.ObjectId(id),
+        };
+      } else {
+        query = {
+          teamName: id,
+        };
+      }
+
+      const result = await RegistrationDatabase.teamExists(query);
+      return result;
+    } catch (e) {
+      if (e) {
+        console.error(e);
+        return "Some error occured";
+      }
+    }
+  }
+
+  static async getTeams({
+    teamName,
+    payment,
+  }: {
+    teamName?: string;
+    payment?: boolean;
+  }) {
+    console.log(teamName, payment);
+
+    let query = {};
+    if (teamName) {
+      query = {
+        teamName,
+      };
+    } else if (!teamName && payment) {
+      query = {
+        payment,
+      };
+    }
+
+    const result = await RegistrationDatabase.getTeams(query);
+    return result;
+  }
+
+  static async makePayment({ team }: { team: string }) {
+    try {
+      const teamExists = (await this.teamExists(team)) as ITeam;
+      if (!teamExists) {
+        throw new Error("Team doesn't exist");
+      }
+      const paymentDetails = await initPayment(
+        teamExists.transactionId as string,
+        teamExists.teamSize
+      );
+
+      console.log(paymentDetails);
+
+      if (paymentDetails.success) {
+        return {
+          team,
+          url: paymentDetails.data.instrumentResponse.redirectInfo.url,
+        };
+      } else {
+        throw Error("Retry");
+      }
+    } catch (e) {
+      console.error(e);
+      if (e instanceof Error) {
+        return e.message;
+      } else {
+        return "Some error occured";
+      }
     }
   }
 }
