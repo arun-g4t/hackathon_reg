@@ -26,12 +26,12 @@ class Server {
   }
 
   private async connectToDb() {
-    return await Database.createConnection();
+    return Database.createConnection();
   }
   public async start(port: number) {
     await this.connectToDb();
     this.port = port;
-    this.app.listen(this.port, () => {
+    this.app.listen(port, () => {
       console.debug(`Listing at port http://localhost:${this.port}/api/v1/`);
     });
   }

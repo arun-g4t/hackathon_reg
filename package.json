@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "start": "NODE_ENV=prod env-cmd -f ./config/.env.prod ts-node-dev index.ts",
-    "dev": "NODE_ENV=dev env-cmd -f ./config/.env.dev ts-node-dev index.ts"
+    "build": "tsc",
+    "start": "node index.js",
+    "dev": "NODE_ENV=dev env-cmd -f ./config/.env.dev ts-node-dev index.ts",
+    "test": "NODE_ENV=test env-cmd -f ./config/.env.test ts-node-dev index.ts"
   },
   "author": "",
   "license": "ISC",
