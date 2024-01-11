@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "build": "tsc",
-    "start": "node index.js",
+    "start": "tsc && node index.js",
     "dev": "NODE_ENV=dev env-cmd -f ./config/.env.dev ts-node-dev index.ts",
     "test": "NODE_ENV=test env-cmd -f ./config/.env.test ts-node-dev index.ts"
   },
