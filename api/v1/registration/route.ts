@@ -5,7 +5,6 @@ const RegistrationRouter = express.Router();
 
 RegistrationRouter.get(
   "/",
-
   async (request: express.Request, response: express.Response) => {
     try {
       const { payment, team } = request.query;
