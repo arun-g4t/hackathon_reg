@@ -29,11 +29,16 @@ class Server {
     return Database.createConnection();
   }
   public async start(port: number) {
-    await this.connectToDb();
-    this.port = port;
-    this.app.listen(port, () => {
-      console.debug(`Listing at port http://localhost:${this.port}/api/v1/`);
-    });
+    try {
+      await this.connectToDb();
+      this.port = port;
+      this.app.listen(port, () => {
+        console.debug(`Listing at port http://localhost:${this.port}/api/v1/`);
+      });
+    } catch (error) {
+      console.error(error);
+      console.error("Error starting the server.");
+    }
   }
 }
 

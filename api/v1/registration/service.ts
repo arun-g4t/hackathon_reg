@@ -38,7 +38,7 @@ class RegistrationService {
     } catch (e) {
       console.error(e);
       if (e instanceof Error) {
-        return e.message;
+        throw new Error(e.message);
       } else {
         return "Some error occured";
       }
